@@ -9,12 +9,15 @@ const Home = () => {
   const { value: course, isLoading, isError } = useSelector((state) => state.course);
 
   // 🔹 state untuk filter/search/sort
-  const [filters, setFilters] = useState({
-    category: "",
-    search: "",
-    sortBy: "",
-    order: "",
-  });
+const [filters, setFilters] = useState({
+  category: "",
+  search: "",
+  sortBy: "",
+  order: "",
+  limit: 5,
+  page: 1,
+});
+
 
   useEffect(() => {
     dispatch(getData(filters)); // ambil data berdasarkan filter
@@ -35,6 +38,14 @@ const Home = () => {
       order: "",
     });
   };
+
+  const handlePageChange = (newPage) => {
+  setFilters((prev) => ({
+    ...prev,
+    page: newPage,
+  }));
+};
+
 
   return (
     <div>
@@ -132,6 +143,24 @@ const Home = () => {
               </div>
             ))
           )}
+          <div style={{ marginTop: "20px" }}>
+            <button
+              disabled={filters.page === 1}
+              onClick={() => handlePageChange(filters.page - 1)}
+            >
+              Prev
+            </button>
+
+            <span style={{ margin: "0 10px" }}>Page {filters.page}</span>
+
+            <button
+              disabled={course.length < filters.limit}
+              onClick={() => handlePageChange(filters.page + 1)}
+            >
+              Next
+            </button>
+          </div>
+
         </div>
       )}
     </div>
