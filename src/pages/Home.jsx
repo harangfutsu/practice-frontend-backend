@@ -29,6 +29,28 @@ const [filters, setFilters] = useState({
       [e.target.name]: e.target.value,
     });
   };
+  
+  const handleSortChange = (e) => {
+  const value = e.target.value;
+
+  if (value === "lowPrice") {
+    setFilters({ ...filters, sortBy: "price", order: "asc" });
+  } else if (value === "highPrice") {
+    setFilters({ ...filters, sortBy: "price", order: "desc" });
+  } else if (value === "aToZ") {
+    setFilters({ ...filters, sortBy: "title", order: "asc" });
+  } else if (value === "zToA") {
+    setFilters({ ...filters, sortBy: "title", order: "desc" });
+  } else if (value === "ratingHigh") {
+    setFilters({ ...filters, sortBy: "rating", order: "desc" });
+  } else if (value === "ratingLow") {
+    setFilters({ ...filters, sortBy: "rating", order: "asc" });
+  } else {
+    // reset sort
+    setFilters({ ...filters, sortBy: "", order: "" });
+  }
+};
+
 
   const handleReset = () => {
     setFilters({
@@ -44,6 +66,7 @@ const [filters, setFilters] = useState({
     ...prev,
     page: newPage,
   }));
+
 };
 
 
@@ -88,6 +111,17 @@ const [filters, setFilters] = useState({
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
+
+        &nbsp;&nbsp;
+<select id="urutkan" onChange={handleSortChange}>
+  <option value="">Urutkan</option>
+  <option value="lowPrice">Harga Rendah</option>
+  <option value="highPrice">Harga Tinggi</option>
+  <option value="aToZ">A to Z</option>
+  <option value="zToA">Z to A</option>
+  <option value="ratingHigh">Rating Tertinggi</option>
+  <option value="ratingLow">Rating Terendah</option>
+</select>
 
         &nbsp;&nbsp;
         <button onClick={handleReset}>Reset</button>

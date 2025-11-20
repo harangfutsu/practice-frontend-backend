@@ -35,6 +35,8 @@ const Login = () => {
         <button type="button" onClick={() => navigate("/register")}>
           Register
         </button>
+
+        
       </form>
 
       {message && (
