@@ -1,8 +1,14 @@
 import { useRef } from "react";
 import { useRegister } from "../hooks/useRegister";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const Register = () => {
+
+  const [password, setPassword] = useState(null)
+  const [confirmation, setConfirmation] = useState(null)
+
+  const [success,setSuccess] = useState(false)
 
   const formRef = useRef();
   const { registerUser, loading, message } = useRegister();
@@ -41,15 +47,20 @@ const Register = () => {
 
         <label>Password</label>
         <br />
-        <input name="password" type="password" required />
+        <input onChange={(e) => setPassword(e.target.value)} name="password" type="password" required />
         <br />
-
+        <label>Re-Type Password</label>
+        <br />
+        <input onChange={(e) => setConfirmation(e.target.value)} name="repassword" type="password" required />
+        <br />
+        <span>{password === confirmation ? "" : "Password tidak sama"}</span>
+        <br />
         <button type="submit" disabled={loading}>
           {loading ? "Registering..." : "Register"}
         </button>
         <br />
-        <button type="button" onClick={() => navigate("/login")}>
-          Login
+        <button type="button" disabled={password !== confirmation} onClick={() => navigate('/login')}>
+          Check
         </button>
       </form>
 

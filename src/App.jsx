@@ -5,8 +5,14 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import CourseEntry from './pages/CourseEntry'
 import CourseDetail from './pages/CourseDetail'
+import Profile from './pages/Profile'
+
+import { fetchMe } from "./store/redux/userReducer"
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+
   return (
     <Routes>
       <Route path='/' element={<Navigate to="/login" replace/>}/>
@@ -16,6 +22,7 @@ const App = () => {
       <Route path='/entry' element={<CourseEntry/>}/>
       <Route path='/update/:id' element={<CourseEntry isUpdate/>}/>
       <Route path='/detail' element={<CourseDetail/>}/>
+      <Route path='/profile' element={<Profile/>} />
     </Routes>
   )
 }

@@ -3,11 +3,19 @@ import { getAllUsers,
     createUser, 
     updateUser, 
     deleteUser,
-    loginUser} from "../../services/api/user";
+    loginUser,
+    getMe} from "../../services/api/user";
 
 export const getUserData = createAsyncThunk("user/getUserData", 
     async () => {
     return await getAllUsers()})
+
+export const fetchMe = createAsyncThunk(
+  "user/fetchMe",
+  async () => {
+    return await getMe()
+  }
+)
 
 export const loginUserData = createAsyncThunk(
     "user/loginUserData",
@@ -52,37 +60,54 @@ export const deleteUserData = createAsyncThunk("user/deleteUserData",
     return id })
 
 export const userSlice = createSlice({
-    name : "user",
-    initialState : {
-        data : [],
-        status : "idle",
-        error : null   
+  name: "user",
+  initialState: {
+    users: [],
+    currentUser: null,
+    token: localStorage.getItem("token"),
+    isLogin: false,
+    status: "idle",
+    isLoading : false,
+    isError : false,
+    error: null,
+  },
+    reducers : {
+
     },
-    reducers : {},
 
     extraReducers : (builder) => {
         builder
-        .addCase(getUserData.pending, (state) => {
-            state.status = "loading" })
-
-        .addCase(getUserData.fulfilled, (state, action) => {
-            state.status = "succeeded";
-            state.data = action.payload })
-
-        .addCase(getUserData.rejected, (state) => {
-            state.status = "failed" })
-        
-        .addCase(loginUserData.pending, (state) => {
+         .addCase(loginUserData.pending, (state) => {
         state.status = "loading";
-        })
-        .addCase(loginUserData.fulfilled, (state, action) => {
+      })
+      .addCase(loginUserData.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload.user;
-        })
-        .addCase(loginUserData.rejected, (state, action) => {
+        state.currentUser = action.payload.data.user;
+        state.token = action.payload.data.token;
+        state.isLogin = true;
+    })
+      .addCase(loginUserData.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-        })
+      })
+
+      .addCase(fetchMe.pending, (state) => {
+        state.isLoading = true
+        state.isError = false
+
+      })
+      .addCase(fetchMe.fulfilled, (state, action) => {
+        state.isLoading = false,
+        state.currentUser = action.payload;
+        
+      })
+      .addCase(fetchMe.rejected, (state) => {
+      state.isLoading = false,
+      state.isError = true
+      })
+      .addCase(getUserData.fulfilled, (state, action) => {
+        state.users = action.payload.data;
+      })
 
 
         .addCase(createUserData.pending, (state) => {

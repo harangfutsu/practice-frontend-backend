@@ -16,7 +16,6 @@ export const useLogin = () => {
         try {
         const res = await dispatch(loginUserData(formData)).unwrap();
         setMessage(`✅ ${res.message}`);
-        console.log(res)
         // pindah ke halaman home setelah login berhasil
         setTimeout(() => navigate("/home"), 2000);
         } catch (err) {

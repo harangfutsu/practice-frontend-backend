@@ -17,3 +17,6 @@ export const deleteUser = (id) =>
 
 export const loginUser = (payload) =>
     api.post("/login", payload).then((r) => r.data);
+
+export const getMe = () =>
+  api.get("/me").then((r) => r.data.data);

@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getData, deleteData } from "../store/redux/courseReducer";
-
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,6 +75,7 @@ const [filters, setFilters] = useState({
 
       {/* 🔹 Filter/Search/Sort UI */}
       <div style={{ marginBottom: "20px" }}>
+
         <label>Category: </label>
         <select name="category" value={filters.category} onChange={handleChange}>
           <option value="">All</option>
@@ -146,6 +146,7 @@ const [filters, setFilters] = useState({
       {/* 🔹 Daftar Course */}
       {!isLoading && !isError && (
         <div>
+          <button onClick={() => navigate('/profile')}>Profile</button>
           <button onClick={() => navigate("/entry")}>Add Course</button>
           <br />
           <br />
